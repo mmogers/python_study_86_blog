@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body>
+    {% if 'logged_in' in session and session['logged_in'] %}
+        <h1>Welcome to Marina's Blog</h1>
+        <form action="/add_post" method="post">
+            <p>Header: <input type="text" name="header" required></p>
+            <p>Text: <textarea name="text" rows="6" required></textarea></p>
+            <button type="submit">Publish Post</button>
+        </form>
+        <ul>
+            {% for post in posts %}
+                <li>
+                    <h3>{{ post['header'] }}</h3>
+                    <p>{{ post['timestamp'] | timestamp_to_date }}</p>
+                    <p>{{ post['text'] }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+        <form action="/logout" method="get">
+            <button type="submit">Logout</button>
+        </form>
+    {% else %}
+        <h1>Please Log In</h1>
+        <form action="/login" method="post">
+            <p>Username: <input type="text" name="username" required></p>
+            <p>Password: <input type="password" name="password" required></p>
+            <button type="submit">Log In</button>
+        </form>
+    {% endif %}
+</body>
+</html>
